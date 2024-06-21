@@ -1,6 +1,6 @@
 package com.example;
 
-//2- suspended
+//2 - suspended
 //1 - executed
 //0 - intialized
 
