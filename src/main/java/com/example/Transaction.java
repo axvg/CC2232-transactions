@@ -7,7 +7,7 @@ package com.example;
 public class Transaction {
     private String transactionName;
     private int status;
-    public int order;
+    private int order;
 
     public Transaction(String transactionName) {
         this.transactionName = transactionName;
@@ -29,5 +29,13 @@ public class Transaction {
 
     public String getName() {
         return this.transactionName;
+    }
+
+    public void setOrder(int order) {
+        this.order = order;
+    }
+
+    public int getOrder() {
+        return this.order;
     }
 }

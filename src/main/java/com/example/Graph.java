@@ -18,7 +18,7 @@ public class Graph {
     public void insertNode(Transaction t) {
         boolean exists = false;
         if (root == null) {
-            t.order = transCount;
+            t.setOrder(transCount);
             transCount++;
             root = new Vertex(t);
         } else {
@@ -28,7 +28,7 @@ public class Graph {
                 temp = temp.getNext();
             }
             if (!exists) {
-                t.order = transCount;
+                t.setOrder(transCount);
                 transCount++;
                 temp.setNext(new Vertex(t));
                 nodeCount++;
@@ -180,7 +180,7 @@ public class Graph {
                     if (youngest == null){
                         youngest = t.getAdjacentNode().getValue();
                     }
-                    if (youngest.order < t.getAdjacentNode().getValue().order) {
+                    if (youngest.getOrder() < t.getAdjacentNode().getValue().getOrder()) {
                         youngest = t.getAdjacentNode().getValue();
                     }
                 }
