@@ -5,21 +5,25 @@ public class Graph {
     private Vertex root;
     private int nodeCount;
     private int edgeCount;
-    private Transaction youngest;
-    private int transCount = 0;
+    private Transaction mostRecent;
+    private int transactionCount = 0;
 
     public Graph() {
         this.root = null;
-        this.youngest = null;
+        this.mostRecent = null;
         this.nodeCount = 0;
         this.edgeCount = 0;
     }
 
+    // Agrega nodo por cada transaccion
+    // Si no hay nodos, crea el nodo raiz
+    // Si ya existe el nodo, no lo agrega
+    // Si no existe, agrega el nodo
     public void insertNode(Transaction t) {
         boolean exists = false;
         if (root == null) {
-            t.setOrder(transCount);
-            transCount++;
+            t.setOrder(transactionCount);
+            transactionCount++;
             root = new Vertex(t);
         } else {
             Vertex temp = root;
@@ -28,14 +32,18 @@ public class Graph {
                 temp = temp.getNext();
             }
             if (!exists) {
-                t.setOrder(transCount);
-                transCount++;
+                t.setOrder(transactionCount);
+                transactionCount++;
                 temp.setNext(new Vertex(t));
                 nodeCount++;
             }
         }
     }
 
+    // Agrega arista entre dos transacciones
+    // Si no existen las transacciones, no agrega la arista
+    // Si existen las transacciones, agrega la arista
+    // Si ya existe la arista, no la agrega
     public void insertEdge(Transaction t1, Transaction t2, Data waitForData) {
         Vertex first = root;
         Vertex second = root;
@@ -60,6 +68,7 @@ public class Graph {
         }
     }
 
+    // Elimina nodo de la lista usando transaccion
     public void deleteNode(Transaction t) {
         boolean exists = false;
 
@@ -89,13 +98,15 @@ public class Graph {
         }
     }
 
-    public Transaction youngestFormsLoop() {
+
+    // Obtiene la transaccion mas reciente que forma un ciclo
+    public Transaction findMostRecentTransaction() {
         edgeStack = new EdgeStack(edgeCount);
         clearStatus();
 
         boolean cycleExists = cycleDFS(root);
         if (cycleExists) {
-            return youngest;
+            return mostRecent;
         }
         return null;
     }
@@ -138,7 +149,7 @@ public class Graph {
             t = start;
         }
     }
-
+    
     private void deleteNode(Vertex node){
         Vertex t = root;
         while (t != null){
@@ -155,6 +166,9 @@ public class Graph {
         }
     }
 
+
+    // Usa DFS (Depth First Search) para encontrar ciclos
+    // Si encuentra un ciclo, devuelve true
     private boolean cycleDFS(Vertex current) {
         if (current != null) {
             if (current.getStatus() != 1) {
@@ -177,11 +191,11 @@ public class Graph {
                 int limit = edgeStack.stackSize();
                 for (int i = 0; i < limit; i++) {
                     Edge t = edgeStack.at(i);
-                    if (youngest == null){
-                        youngest = t.getAdjacentNode().getValue();
+                    if (mostRecent == null){
+                        mostRecent = t.getAdjacentNode().getValue();
                     }
-                    if (youngest.getOrder() < t.getAdjacentNode().getValue().getOrder()) {
-                        youngest = t.getAdjacentNode().getValue();
+                    if (mostRecent.getOrder() < t.getAdjacentNode().getValue().getOrder()) {
+                        mostRecent = t.getAdjacentNode().getValue();
                     }
                 }
                 return true;
@@ -190,6 +204,7 @@ public class Graph {
         return false;
     }
 
+    // Todos los nodos a status 0
     private void clearStatus() {
         Vertex temp = root;
         while (temp != null) {

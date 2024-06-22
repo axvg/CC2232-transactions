@@ -1,0 +1,6 @@
+read(T1,A1)
+read(T2,A2)
+read(T1,A2)
+write(T1,A2)
+end(T1)
+
