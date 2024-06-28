@@ -14,14 +14,16 @@ end(T1)
 
 * Output:
 ```sql
-read(T1,A2) is finished
-read(T2,A1) is finished
-read(T3,A3) is finished
+read(T1,A2) is executing
+read(T2,A1) is executing
+read(T3,A3) is executing
 read(T3,A2) is suspended
 read(T3,A1) is suspended
+End transaction T2
 Executing suspended commands...
 read(T3,A2) is suspended
-read(T3,A1) is finished
+read(T3,A1) is executing
+End transaction T1
 Executing suspended commands...
-read(T3,A2) is finished
+read(T3,A2) is executing
 ```

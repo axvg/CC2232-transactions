@@ -102,7 +102,7 @@ public class DBTransactionManager {
                     // Si no ha sido modificado
                     // Se imprime el mensaje correspondiente
                     if (response == 0) {
-                        System.out.println(instruction + " is finished");
+                        System.out.println(instruction + " is executing");
                     } else if (response == 1) {
                         System.out.println(instruction + " is suspended");
                         suspended[suspendedCount++] = instruction;
@@ -163,6 +163,7 @@ public class DBTransactionManager {
                     findData.lockData(targetTransaction.getName());
                 }
             } else {
+                System.out.println("End transaction " + targetTransaction.getName());
                 waitForGraph.deleteNode(targetTransaction);
                 executionStatus = 2;
             }
