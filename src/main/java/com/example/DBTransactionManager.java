@@ -103,7 +103,7 @@ public class DBTransactionManager {
                     // Se imprime el mensaje correspondiente
                     if (response == 0) {
                         System.out.println(instruction + " is executing");
-                    } else if (response == 1) {
+                    } else if (response == 2) {
                         System.out.println(instruction + " is suspended");
                         suspended[suspendedCount++] = instruction;
                     } else {
@@ -154,7 +154,7 @@ public class DBTransactionManager {
             int executionStatus = 0;
             if (!instructionType.equals("end")) {
                 if (findData.isLocked() && !findData.lockTransaction().equals(targetTransaction.getName())) {
-                    executionStatus = 1;
+                    executionStatus = 2;
                     targetTransaction.suspend();
                     Transaction waitFor = addTransaction(findData.lockTransaction());
                     waitForGraph.insertEdge(waitFor, targetTransaction, findData);
@@ -165,11 +165,12 @@ public class DBTransactionManager {
             } else {
                 System.out.println("End transaction " + targetTransaction.getName());
                 waitForGraph.deleteNode(targetTransaction);
-                executionStatus = 2;
+                executionStatus = 1;
             }
             if (executionStatus != 0) {
                 Transaction toDelete = waitForGraph.findMostRecentTransaction();
                 if (toDelete != null) {
+                    System.out.println("Cycle detected, deleting transaction " + toDelete.getName());
                     waitForGraph.deleteNode(toDelete);
                     modified = true;
                 }
