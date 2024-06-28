@@ -102,11 +102,12 @@ public class DBTransactionManager {
                     // Si no ha sido modificado
                     // Se imprime el mensaje correspondiente
                     if (response == 0) {
-                        System.out.println(instruction + " finished");
+                        System.out.println(instruction + " is finished");
                     } else if (response == 1) {
-                        System.out.println(instruction + " suspended");
+                        System.out.println(instruction + " is suspended");
                         suspended[suspendedCount++] = instruction;
                     } else {
+                        System.out.println("Executing suspended commands...");
                         executeCommands(suspended, suspendedCount);
                     }
                 }
